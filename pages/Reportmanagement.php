@@ -46,6 +46,9 @@ if (!isset($_SESSION['email'])) {
     <![endif]-->
 
 </head>
+<style>
+.logo{width:50%;}
+</style>
 
 <body>
 
@@ -53,16 +56,6 @@ if (!isset($_SESSION['email'])) {
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
-            </div>
-            
             <ul class="nav navbar-top-links navbar-right">                             
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -70,7 +63,7 @@ if (!isset($_SESSION['email'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-user">                   
                         <li class="divider"></li>
-                        <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -85,6 +78,9 @@ if (!isset($_SESSION['email'])) {
         <div id="page-wrapper">
             <div class="container-fluid">
             <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Report Management</h1>
+                </div>
               <div class="col-lg-12">
                    <ol class="breadcrumb">
                       <li class="breadcrumb-item">
@@ -97,13 +93,6 @@ if (!isset($_SESSION['email'])) {
                     </ol>
               </div>
            <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-           <h1 style="font-size:24px;">Report Management</h1>
-          <hr>
-        </div>
-      </div>
-
     <!-- Tab panes -->
     <div class="tab-content"> 
        

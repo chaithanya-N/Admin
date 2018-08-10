@@ -37,10 +37,11 @@ if (!isset($_SESSION['email'])) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 </head>
 <style>
-/*a:hover {
+a:hover {
     text-decoration:none; 
 }
-li>.active{background-color:#337ab7;color:#fff;}*/
+.tag>ul>li>.active{background-color:#337ab7;color:#fff;}
+.logo{width:50%;}
 </style>
 
 <body>
@@ -49,17 +50,6 @@ li>.active{background-color:#337ab7;color:#fff;}*/
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
-            </div>
-            <!-- /.navbar-header -->
-
             <ul class="nav navbar-top-links navbar-right">                             
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -67,7 +57,7 @@ li>.active{background-color:#337ab7;color:#fff;}*/
                     </a>
                     <ul class="dropdown-menu dropdown-user">                   
                         <li class="divider"></li>
-                        <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -84,26 +74,21 @@ li>.active{background-color:#337ab7;color:#fff;}*/
             <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
+                    <h1 class="page-header">Manage Banner Image</h1>
+                </div>
+              <div class="col-lg-12">
                    <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a href="dashboard.php">Dashboard</a>
                       </li>
                       <li class="breadcrumb-item">
-                         <a href="slidermanagement.php">Image Management</a>
+                         <a href="bannermanagement.php">Image Management</a>
                       </li>
                       <li class="breadcrumb-item active">Manage Banner Image</li>
                     </ol>
               </div>
-                <div class="container-fluid">
-     <div class="row">
-        <div class="col-md-12">
-          <h1 style="font-size:24px;">Manage Banner Image</h1>
-          <hr>
-        </div>
-      </div>
-
-  <!-- <div class="container"> -->
     <!-- Nav pills -->
+    <div class="tag">
     <ul class="nav nav-pills" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" data-toggle="pill" href="#home">Upload Banner IMages</a>
@@ -112,6 +97,7 @@ li>.active{background-color:#337ab7;color:#fff;}*/
         <a class="nav-link" data-toggle="pill" href="#menu1">Delete Photos</a>
       </li>
     </ul>
+  </div>
 
 
  <div class="tab-content">
@@ -120,7 +106,7 @@ li>.active{background-color:#337ab7;color:#fff;}*/
         </div>
     <!-- Tab panes -->
     <div class="tab-content">
-      <div id="home" class="container tab-pane active">
+      <div id="home" class="col-md-12 tab-pane active">
         <div class="row" style="background:#f7f7f7; padding:20px;margin:5px;text-align:left;">
               <div class="col-md-6 col-md-offset-3" >
                <!-- <h1 style="font-size:16px;"> Upload Slider Image</h1> -->
@@ -150,7 +136,7 @@ li>.active{background-color:#337ab7;color:#fff;}*/
            </div>
       </div>
       
-        <div id="menu1" class="container tab-pane fade">
+        <div id="menu1" class="col-md-12 tab-pane fade">
          <div class="col-md-12" style="padding:10px;">
           <div class="row">
          <?php    
@@ -158,17 +144,16 @@ li>.active{background-color:#337ab7;color:#fff;}*/
                       while($wrow = mysqli_fetch_assoc($w))
                       {
                     ?>             
-                     <div class="col-md-3" style="border:1px solid; padding:10px; ">
+                     <div class="col-md-3">
                       <div class="thumbnail">
-                        <a href="/w3images/lights.jpg">
-                         <img  src="../images/bannerimages/<?php echo $wrow['banner_image']; ?>" alt="" class="img-responsive"  style="width:100%;">
+                         <img  src="../images/bannerimages/<?php echo $wrow['banner_image']; ?>" alt="" class="img-responsive"  
+                         style="width:100%; height:200px;">
                           <div class="caption">
                             <p>
                             <a href="deletebanner.php?id=<?php echo $wrow['id'];?>" id="<?php echo $wrow['id'];?>">
                         <span style="color:red; cursor:pointer" class="fas fa-trash-alt" id="bannerimage"></span></a> 
                                 </p>
                           </div>
-                        </a>
                       </div>
                     </div>
                         
@@ -214,7 +199,7 @@ li>.active{background-color:#337ab7;color:#fff;}*/
     <script src="../dist/js/sb-admin-2.js"></script>
      <script>
  $(document).ready(function(){
-    $('#home').addClass('active');
+    // $('#home').addClass('active');
 
 
     var full_url = document.URL; // Get current url

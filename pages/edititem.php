@@ -83,7 +83,7 @@ a:hover {
             <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                    <h1 class="page-header">Manage Sub-Category</h1>
+                    <h1 class="page-header">Manage Items</h1>
                 </div>
               <div class="col-lg-12">
                    <ol class="breadcrumb">
@@ -91,33 +91,24 @@ a:hover {
                         <a href="dashboard.php">Dashboard</a>
                       </li>
                       <li class="breadcrumb-item">
-                        <a href="subcategory.php">category Management</a>
+                        <a href="manageitem.php">Product Management</a>
                       </li>
-                      <li class="breadcrumb-item active">Subcategory Management</li>
+                     <li class="breadcrumb-item active">Manage Items</li>
                     </ol>
-              </div>
-    <!-- Nav pills -->
-    <div class="tag">
-    <ul class="nav nav-pills" role="tablist">
-      <li class="nav-item">
-       <a class="nav-link active" data-toggle="pill" href="#home">Create SubCategory</a>
-      </li>
-      <li  class="nav-item">
-      <a  id="del" class="nav-link" data-toggle="pill" href="#menu1">SubCategory List</a>
-      </li>
-    </ul>
-  </div>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div id="home" class="container tab-pane active"><br>
-           <div class="row" style="background:#f7f7f7; padding:20px;margin:-15px;">
-                <div class="col-md-8" >
-                  <form class="form-horizontal" action="" id="createsubcategoryform" method="post">
+    
+                  
+              <?php 
+                  $id = $_GET['id'];
+                  // echo $id;
+                  $product = mysqli_query($link,"SELECT * FROM   products  WHERE    product_id = '".$id."'");
+                  $row = mysqli_fetch_assoc($product);
+                        ?>
+                <div class="col-md-8 " style="color:#000;"> 
+                  <form class="form-horizontal" action="" id="createproductform" method="post">
                     <div class="row" style="padding:15px;">
                          <label class="col-md-4"><b>Select Category</b></label>
                         <div class="col-md-8">
-                          <select name="categoryn" class="form-control" id="status" required>                   
+                          <select name="categoryn" class="form-control" id="categoryname" required>                   
                                 <option selected="yes" value="selected" disabled="yes">select Category</option>
                                  <?php 
  
@@ -133,88 +124,66 @@ a:hover {
                              </select>                                 
                         </div>  
                         </div>   
+
+                     <div class="row" style="padding:15px;">
+                         <label class="col-md-4"><b>Select SubCategory</b></label>
+                        <div class="col-md-8">
+                          <select name="subcateg" class="form-control" id="SubCategoryname" required>                   
+                                <option selected="yes" value="selected" disabled="yes">select SubCategory</option>
+                                 <?php 
+ 
+             $categoryselect = mysqli_query($link,"SELECT DISTINCT * FROM  sub_category order BY `subcategory_name` ASC");
+            while($categorytrow = mysqli_fetch_assoc($categoryselect))
+                                 {
+                                ?>
+         <option value="<?php echo $categorytrow['subcategory_id']?>"><?php echo ucfirst($categorytrow['subcategory_name']) ?></option>
+                        
+                                <?php 
+                              }
+                              ?>
+                             </select>                                 
+                        </div>  
+                    </div>   
+
                        <div class="row" style="padding:15px;">
-                          <label class="col-md-4"><b>Create SubCategory</b> </label>
+                          <label class="col-md-4"><b>Create Product</b> </label>
                           <div class="col-md-8">
-                              <input type="text" class="form-control" id="name" name="subcategory" placeholder="Enter SubCategory">
+                              <input type="text" class="form-control" id="name" name="product" value="<?php echo $row['product_name'];?>">
                            </div>                         
                         </div> 
                          <div class="row" style="padding:15px;">
                          <label class="col-md-4"><b>select status</b></label>
                         <div class="col-md-8">
-                          <select name="subcategorystatus" class="form-control" id="status" required>
+                          <select name="productstatus" class="form-control" id="productstatus" required>
+                                <option value="" selected="yes" disabled="disabled">select status</option>
                                 <option selected="yes" value="selected" disabled="yes">select status</option>
                                  <option value="Active">Active</option>
                                   <option value="Deactive">Deactive</option>
                              </select>                                 
                         </div>  
-                        </div>                  
-                            <button class=" col-md-offset-8 btn btn-primary" style="margin:10px;" type="submit" 
-                             value="Upload" id="createsubcategorybtn">Create</button>                                                                         
-                     </form>
-                     </div>    
-                   </div>
-            </div>
-     <div id="menu1" class="container tab-pane fade" style="padding:15px;">
-        <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            DataTables Advanced Tables
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                  <tr>
-                    <th>S.No</th>
-                    <th>Category Name</th>  
-                    <th>SubCategory Name</th>                  
-                    <th>SubCategory Status<Status>
-                    <th>Edit<Status>
-                  </tr>
-                </thead>
-                 <tbody>
-                <?php
-                  $counter = 1;
-$w = mysqli_query($link,"SELECT * FROM sub_category s INNER JOIN category c on s.category_id = c.category_id 
- ORDER BY subcategory_name");
-                  // $w = mysqli_query($link,"SELECT * FROM `sub_category`");
-                  while($wrow = mysqli_fetch_assoc($w))
-                  {
-                ?>
-                  <tr>
-                    <td><?php echo $counter; ?></td>
-                    <td><?php echo $wrow['category_name']; ?></td>
-                    <td><?php echo $wrow['subcategory_name']; ?></td>
-                    <td><?php echo $wrow['subcategory_status']; ?></td>
-                   <td><a href="editsubcategory.php?id=<?php echo $wrow['subcategory_id'];?>" id="<?php echo 
-                   $wrow['subcategory_id'];?>"><i class="fas fa-edit"></i></a></td>
-                  </tr>
-                  
-                <?php
-                $counter++; }
-                ?>
-                  
-                  </tbody>
+                        </div>                                                                                     
+                         <input type="hidden" class="form-control" id="name1" name="productid" 
+                            value="<?php echo $row['product_id']; ?>">                                               
+                    
+                          <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-warning" id="updateproduct">Update</button>
+                            <a href="manageproduct.php" type="button" class="btn btn-info"id="cancelecategory">Cancel</a> 
+                              <button type="button" class="btn btn-danger" id="deleteproduct">Delete</button>
+                            </div>
+                          </div> 
 
-            </table>
-          </div>
-        </div>
-      </div>
-        
-         </div>      
-      
-    </div>
-  </div>
-            </div>
-          
-           
+                           </form>                                                                                                                    
+                                                             
+              </div>
+  
+    
+            </div>     
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
+  </div>
 
     
     <!-- jQuery -->
@@ -235,41 +204,105 @@ $w = mysqli_query($link,"SELECT * FROM sub_category s INNER JOIN category c on s
     <script src="../dist/js/sb-admin-2.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-    });
-     $(document).ready(function() {
+   <script>
+         
+ $(document).ready(function() {
+   // get category from db
+   $('#categoryname option').each(function(){
 
-    $('#createsubcategorybtn').click(function(){
-      var data = $('#createsubcategoryform').serialize();
-         // console.log(data);
-         // alert();
-         $.ajax({
-              url: 'process-createsubcategory.php',     
-                type: 'POST', // performing a POST request
-                data : data,
-                                
-               success: function(result)         
-                {
-                    // alert(result);
-                   if(result = "SUCCESS")
-                    {
-                  //         alert(result);
-                         window.location.href = "subcategory.php";
-                  // //  //   $('#usercreate').modal('show'); 
-                  // //  //  $('#usercreate').on('hidden.bs.modal', function () {
-                  // //  // window.location.href = "createuser.php";
-                  // //  //   })
-                  }
-                }
-         });
-    })
+      var ut = '<?php echo $row['category_id']; ?>';
+      if($(this).val() == ut)
+      {
+        $(this).addClass("active");
+        $(this).attr("selected","selected");
+      }
+    
+
+});
+    // get category from db
+  // get subcategory_status from db
+  $('#SubCategoryname option').each(function(){
+
+      var ut = '<?php echo $row['subcategory_id']; ?>';
+      if($(this).val() == ut)
+      {
+        $(this).addClass("active");
+        $(this).attr("selected","selected");
+      }
+    
+
+});
+// update subcategory_status
+$('#productstatus option').each(function(){
+
+      var ut = '<?php echo $row['product_status']; ?>';
+      if($(this).val() == ut)
+      {
+        $(this).addClass("active");
+        $(this).attr("selected","selected");
+      }
+    
+
 });
 
+    $('#updateproduct').click(function(){
+  var data = $('#createproductform').serialize();
+
+   // alert();
+  $.ajax({
+    url:'process-edititem.php',
+    type:'POST',
+    data:data,
+    success:function(result)
+    {
+       // alert(result);
+       window.location.href = "manageitem.php";
+      // if(result='Success')
+      // {
+      //   $('#editsuccess').modal('show'); 
+      //           $('#editsuccess').on('hidden.bs.modal', function () {
+      //           window.location.href = "existinguser.php";
+      //           })
+      // }
+    }
+
+  })
+})
+ // update subcategory_status end
+ // delete subcategory_status
+ $('#deleteproduct').click(function(){
+
+  var data = $('#createproductform').serialize();
+
+  $.ajax({
+    url:'process-deleteitem.php',
+    type:'POST',
+    data:data,
+
+    success:function(result)
+    {
+        // alert(result);
+        window.location.href = "manageitem.php";
+      // if(result == 'Success')
+      // {
+      //   $('#deletesuccess').modal('show'); 
+      //               $('#deletesuccess').on('hidden.bs.modal', function () {
+      //               window.location.href = "existinguser.php";
+      //               })
+      // }
+    }
+
+  })
+})
+ // delete subcategory_status end
+});
+
+
+
+
+
     </script>
+
 
 </body>
 

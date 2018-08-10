@@ -46,6 +46,13 @@ if (!isset($_SESSION['email'])) {
     <![endif]-->
 
 </head>
+<style>
+a:hover {
+    text-decoration:none; 
+}
+.tag>ul>li>.active{background-color:#337ab7;color:#fff;}
+.logo{width:50%;}
+</style>
 
 <body>
 
@@ -53,16 +60,6 @@ if (!isset($_SESSION['email'])) {
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
-            </div>
-            
             <ul class="nav navbar-top-links navbar-right">                             
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -70,7 +67,7 @@ if (!isset($_SESSION['email'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-user">                   
                         <li class="divider"></li>
-                        <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -86,26 +83,20 @@ if (!isset($_SESSION['email'])) {
             <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                   <ol class="breadcrumb">
-                      <li class="breadcrumb-item">
-                        <a href="dashboard.php">Dashboard</a>
-                      </li>
-                      <li class="breadcrumb-item">
-                        <a href="slidermanagement.php">Image Management</a>
-                      </li>
-                      <li class="breadcrumb-item active">Manage Slider Image</li>
-                    </ol>
-              </div>
-                <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 style="font-size:24px;">Manage Slider Image</h1>
-          <hr>
-        </div>
-      </div>
-
-  <!-- <div class="container"> -->
+                    <h1 class="page-header">Manage Category</h1>
+                </div>
+        <div class="col-lg-12">
+        <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="dashboard.php">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="category.php">category Management</a>
+      </li>
+      <li class="breadcrumb-item active">category Management</li>
+    </ol>
     <!-- Nav pills -->
+    <div class="tag">
     <ul class="nav nav-pills" role="tablist">
       <li class="nav-item">
        <a class="nav-link active" data-toggle="pill" href="#home">Create Category</a>
@@ -114,12 +105,13 @@ if (!isset($_SESSION['email'])) {
        <a  id="del" class="nav-link" data-toggle="pill" href="#menu1">Category List</a>
       </li>
     </ul>
+  </div>
 
     <!-- Tab panes -->
     <div class="tab-content">
       <div id="home" class="container tab-pane active"><br>
-           <div class="row" style="background:#f7f7f7; padding:20px;margin:15px;">
-                <div class="col-md-8 col-md-offset-4" >
+            <div class="row" style="background:#f7f7f7; padding:20px;margin:-15px;">
+                <div class="col-md-7" >
                   <form class="form-horizontal" action="" id="createcategoryform" method="post">
                        <div class="row" style="padding:15px;">
                           <label class="col-md-4"><b>Create Category</b> </label>
@@ -145,14 +137,16 @@ if (!isset($_SESSION['email'])) {
             </div>
      
      <div id="menu1" class="container tab-pane fade" style="padding:15px;">
-        <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Data Table Example</div>
-        <div class="card-body">
-          <!-- <div class="table-responsive"> -->
-            <div class="panel-body">
-            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-               <thead>
+        <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            DataTables Advanced Tables
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
                   <tr>
                     <th>S.No</th>
                     <th>Category Name</th>                  
@@ -224,6 +218,36 @@ if (!isset($_SESSION['email'])) {
             responsive: true
         });
     });
+
+
+
+     $(document).ready(function() {
+
+    $('#createcategorybtn').click(function(){
+      var data = $('#createcategoryform').serialize();
+         // console.log(data);
+         // alert();
+         $.ajax({
+              url: 'process-createcategory.php',     
+                type: 'POST', // performing a POST request
+                data : data,
+                                
+               success: function(result)         
+                {
+                   // alert(result);
+                  if(result = "SUCCESS")
+                      {
+                          alert(result);
+                           window.location.href = "category.php";
+                  //  //   $('#usercreate').modal('show'); 
+                  //  //  $('#usercreate').on('hidden.bs.modal', function () {
+                  //  // window.location.href = "createuser.php";
+                  //  //   })
+                  }
+                }
+         });
+    })
+});
     </script>
 
 </body>

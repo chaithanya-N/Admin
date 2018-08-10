@@ -46,6 +46,13 @@ if (!isset($_SESSION['email'])) {
     <![endif]-->
 
 </head>
+<style>
+a:hover {
+    text-decoration:none; 
+}
+.tag>ul>li>.active{background-color:#337ab7;color:#fff;}
+.logo{width:50%;}
+</style>
 
 <body>
 
@@ -53,16 +60,6 @@ if (!isset($_SESSION['email'])) {
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
-            </div>
-            
             <ul class="nav navbar-top-links navbar-right">                             
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -70,7 +67,7 @@ if (!isset($_SESSION['email'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-user">                   
                         <li class="divider"></li>
-                        <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -86,27 +83,21 @@ if (!isset($_SESSION['email'])) {
             <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
+                    <h1 class="page-header">Manage Items</h1>
+                </div>
+              <div class="col-lg-12">
                    <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a href="dashboard.php">Dashboard</a>
                       </li>
                       <li class="breadcrumb-item">
-                        <a href="manageproduct.php">Product Management</a>
+                        <a href="manageitem.php">Product Management</a>
                       </li>
                      <li class="breadcrumb-item active">Manage Items</li>
                     </ol>
               </div>
-                <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-           <h1 style="font-size:24px;">Manage Items</h1>
-          <hr>
-        </div>
-      </div>
-
-  <!-- <div class="container"> -->
     <!-- Nav pills -->
-   <div class="row" style="margin:5px;">          
+   <div class="row tag" style="margin:5px;">          
  <ul class="nav nav-pills" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" data-toggle="pill" href="#home">Create Item</a>
@@ -123,13 +114,14 @@ if (!isset($_SESSION['email'])) {
     <!-- Tab panes -->
     <div class="tab-content">
      <div id="home" class="container tab-pane active"><br>
-           <div class="row" style="background:#f7f7f7; padding:20px;margin:15px;">
-                <div class="col-md-8 col-md-offset-4" >
+           <div class="row" style="background:#f7f7f7; padding:20px;margin:-15px;">
+                <div class="col-md-8" >
                   <form class="form-horizontal" action="process-createitems.php" id="createitemform" method="post" enctype="multipart/form-data"">
+                    <input type="hidden" name="substatus" value="Active" id="substatus">
                     <div class="row" style="padding:15px;">
                          <label class="col-md-4"><b>Select Category</b></label>
                         <div class="col-md-8">
-                          <select name="categoryn" class="form-control" id="status" required>                   
+                          <select name="categoryn" class="form-control" id="categoryn" required>                   
                                 <option selected="yes" value="selected" disabled="yes">select Category</option>
                                  <?php 
  
@@ -146,45 +138,31 @@ if (!isset($_SESSION['email'])) {
                         </div>  
                         </div>   
 
-                     <div class="row" style="padding:15px;">
-                         <label class="col-md-4"><b>Select SubCategory</b></label>
+                        <div class="row" style="padding:15px;">
+                        <label class="col-md-4"><b>Select SubCategory</b> </label>
                         <div class="col-md-8">
-                          <select name="subcateg" class="form-control" id="status" required>                   
-                                <option selected="yes" value="selected" disabled="yes">select SubCategory</option>
-                                 <?php 
- 
-             $categoryselect = mysqli_query($link,"SELECT DISTINCT * FROM  sub_category order BY `subcategory_name` ASC");
-            while($categorytrow = mysqli_fetch_assoc($categoryselect))
-                                 {
-                                ?>
-         <option value="<?php echo $categorytrow['subcategory_id']?>"><?php echo ucfirst($categorytrow['subcategory_name']) ?></option>
-                        
-                                <?php 
-                              }
-                              ?>
-                             </select>                                 
-                        </div>  
-                    </div> 
+                              <!-- <select name="client" class="form-control" id="response"> -->
+                                <select name="subcateg" class="form-control" id="response" required>        
+                                <option value="" selected="yes" disabled="disabled">Select SubCategory</option>
+                                <option value=""></option>
+                                  
+                             </select>
+                             
 
-                     <div class="row" style="padding:15px;">
-                         <label class="col-md-4"><b>Select Product</b></label>
+                        </div>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <label class="col-md-4"><b>Select Product</b> </label>
                         <div class="col-md-8">
-                          <select name="product" class="form-control" id="status" required>                   
-                                <option selected="yes" value="selected" disabled="yes">select Product</option>
-                                 <?php 
- 
-             $productselect = mysqli_query($link,"SELECT DISTINCT * FROM  products order BY `product_name` ASC");
-            while($productrow = mysqli_fetch_assoc($productselect))
-                                 {
-                                ?>
-             <option value="<?php echo $productrow['product_id']?>"><?php echo ucfirst($productrow['product_name']) ?></option>
-                        
-                                <?php 
-                              }
-                              ?>
-                             </select>                                 
-                        </div>  
-                        </div>     
+                                <select name="Product" class="form-control" id="response1" required>        
+                                <option value="" selected="yes" disabled="disabled">Select Product</option>
+                                <option value=""></option>
+                                  
+                             </select>
+                             
+
+                        </div>
+                    </div>
 
                        <div class="row" style="padding:15px;">
                           <label class="col-md-4"><b>Create Item</b> </label>
@@ -215,8 +193,8 @@ if (!isset($_SESSION['email'])) {
                    </div>
             </div>
       <div id="menu1" class="container tab-pane fade"><br>
-           <div class="row" style="background:#f7f7f7; padding:20px;margin:15px;">
-                <div class="col-md-8 col-md-offset-4" >
+           <div class="row" style="background:#f7f7f7; padding:20px;margin:-15px;">
+                <div class="col-md-8" >
                   <form class="form-horizontal" action="process-itemimages.php" id="createitemfeaturesform" method="post" enctype="multipart/form-data"">
                     
 
@@ -273,21 +251,23 @@ if (!isset($_SESSION['email'])) {
                    </div>
             </div>
             <div id="menu2" class="container tab-pane fade" style="padding:15px;">
-        <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Data Table Example</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-               <thead>
+        <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            DataTables Advanced Tables
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
                   <tr>
                     <th>S.No</th>
                     <th>Category Name</th>  
                     <th>Sub Category Name</th>  
                     <th>Product Name</th>  
-                    <th>Item Name</th>  
-                    <!-- <th>Item Price</th>    -->
-                    <!-- <th>Item Description</th>                   -->
+                    <th>Item Name</th> 
+                    <th>Item Image</th>   
                     <th>Item Status<Status>
                     <th>Edit<Status>
                   </tr>
@@ -297,20 +277,19 @@ if (!isset($_SESSION['email'])) {
                   $counter = 1;
  $w = mysqli_query($link,"SELECT * FROM items i INNER JOIN products p on i.product_id = p.product_id INNER JOIN sub_category s on s.subcategory_id = i.subcategory_id INNER JOIN category c on c.category_id = i.category_id ORDER BY item_name");
                  // $w = mysqli_query($link,"SELECT * FROM `items`");
-                  while($wrow = mysqli_fetch_assoc($w))
+                  while($row = mysqli_fetch_assoc($w))
                   {
                 ?>
                   <tr>
                     <td><?php echo $counter; ?></td>
-                    <td><?php echo $wrow['category_name']; ?></td>
-                    <td><?php echo $wrow['subcategory_name']; ?></td>
-                    <td><?php echo $wrow['product_name']; ?></td>
-                    <td><?php echo $wrow['Item_name']; ?></td>
-                    <!-- <td><?php echo $wrow['item_price']; ?></td> -->
-                    <!-- <td><?php echo $wrow['item_description']; ?></td> -->
-                    <td><?php echo $wrow['item_status']; ?></td>
-                   <td><a href="edititem.php?id=<?php echo $wrow['item_id'];?>" id="<?php echo 
-                   $wrow['item_id'];?>"><i class="fas fa-edit"></i></a></td>
+                    <td><?php echo $row['category_name']; ?></td>
+                    <td><?php echo $row['subcategory_name']; ?></td>
+                    <td><?php echo $row['product_name']; ?></td>
+                    <td><?php echo $row['Item_name']; ?></td>
+                     <td><img src="<?php echo $row['item_image']; ?>" style="height:25%;width:25%;"></td>
+                    <td><?php echo $row['item_status']; ?></td>
+                   <td><a href="edititem.php?id=<?php echo $row['item_id'];?>" id="<?php echo 
+                   $row['item_id'];?>"><i class="fas fa-edit"></i></a></td>
                   </tr>
                   
                 <?php
@@ -318,26 +297,16 @@ if (!isset($_SESSION['email'])) {
                 ?>
                   
                   </tbody>
-
             </table>
           </div>
         </div>
       </div>
-         </div>  
-
-
-
-
-
-      
-    </div>
-  </div>
-            </div>
-          
-           
+         </div>      
+             </div>
+               </div>
+            </div>        
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
 
@@ -362,10 +331,69 @@ if (!isset($_SESSION['email'])) {
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
     $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
+
+    $('#createitemfeaturesbtn').click(function(){
+      var data = $('#createitemfeaturesform').serialize();
+         // console.log(data);
+         // alert();
+         $.ajax({
+              url: 'process-createitem.php',     
+                type: 'POST', // performing a POST request
+                data : data,
+                                
+               success: function(result)         
+                {
+                     // alert(result);
+                     window.location.href = "manageitem.php";
+                  //  if(result = "SUCCESS")
+                  //   {
+                  // //alert(result);
+                  //        // window.location.href = "manageproduct.php";
+                  // // //  //   $('#usercreate').modal('show'); 
+                  // // //  //  $('#usercreate').on('hidden.bs.modal', function () {
+                  // // //  // window.location.href = "createuser.php";
+                  // // //  //   })
+                  // }
+                }
+         });
+    })
+
+
+ $("#categoryn").change(function(){
+        var selectcategory = $("#categoryn option:selected").val();
+        var substatus = $("#substatus").val();
+
+        // alert(substatus);
+        $.ajax({
+            type: "POST",
+            url: "process-select-category.php",
+            data: {categoryn : selectcategory,substatus : substatus} 
+        }).done(function(result){
+
+              // alert(result);
+             $("#response").html(result);
         });
     });
+
+
+ $("#response").change(function(){
+        var selectsubcategory = $("#response option:selected").val();
+        var substatus = $("#substatus").val();
+
+        // alert(substatus);
+        $.ajax({
+            type: "POST",
+            url: "process-select-sucategory.php",
+            data: {subcateg : selectsubcategory,substatus : substatus} 
+        }).done(function(result){
+
+             // alert(result);
+             $("#response1").html(result);
+        });
+    });
+
+});
+
     </script>
 
 </body>

@@ -44,24 +44,15 @@ if (!isset($_SESSION['email'])) {
     <![endif]-->
 
 </head>
+<style>
+.logo{width:50%;}
+</style>
 
 <body>
 
     <div id="wrapper">
-
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
-            </div>
-            <!-- /.navbar-header -->
-
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">           
             <ul class="nav navbar-top-links navbar-right">                             
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -69,7 +60,7 @@ if (!isset($_SESSION['email'])) {
                     </a>
                     <ul class="dropdown-menu dropdown-user">                   
                         <li class="divider"></li>
-                        <li><a href="login.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -77,37 +68,34 @@ if (!isset($_SESSION['email'])) {
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
-            <?php include 'navbar.php'; ?>
-
-            
+            <?php include 'navbar.php'; ?>      
         </nav>
 
         <div id="page-wrapper">
             <div class="container-fluid">
+              <div class="row">
+              <div class="col-lg-12">
+                    <h1 class="page-header">Manage Logo</h1>
+                </div>
+        </div>
             <div class="row">
-                        <div class="col-lg-12">
-                            <ol class="breadcrumb" style="font-size:18px;">
-                            <li class="breadcrumb-item">
-                              <a href="dashboard.php">Dashboard</a>
-                            </li>
-                             <li class="breadcrumb-item">
-                              <a href="logomanagement.php">Logo Management</a>
-                            </li>
-                            <li class="breadcrumb-item active">Manage Logo</li>
-                          </ol>
-                        </div>
+              <div class="col-lg-12">
+                  <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="dashboard.php">Dashboard</a>
+                  </li>
+                   <li class="breadcrumb-item">
+                    <a href="logomanagement.php">Logo Management</a>
+                  </li>
+                  <li class="breadcrumb-item active">Manage Logo</li>
+                </ol>
+              </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <h1 style="font-size:24px;">Manage Logo</h1>
-                <hr>
-              </div>
-        </div>
+            
         <div class="row">
           <div class="col-md-12">
             <div class="row">
-              
               <div class="col-md-2">
               <?php
                 $q = mysqli_query($link,"SELECT logo from logo");
@@ -120,7 +108,7 @@ if (!isset($_SESSION['email'])) {
                   if(empty($rowdata['logo']))
                   {
                     ?>
-                      <img src="../images/logo.png" width="100%">
+                      <img src="../images/default-placeholder.png" width="100%">
                     <?php 
                   }
                   else
@@ -134,16 +122,21 @@ if (!isset($_SESSION['email'])) {
               else
               {
                 ?>
-                 <img src="../images/logo.png" width="100%">
+                 <img src="../images/default-placeholder.png" width="100%">
                 <?php
               }
               ?>
              </div>
              <div class="col-md-6">
-               <h1 style="font-size:16px;"> Upload Logo</h1>
-               <form action="upload-logo.php" method="post" enctype="multipart/form-data">
-                 <input type="file" name="file">
-                 <button type="submit" value="Upload">Upload</button>
+               <form action="upload-logo.php" method="post" enctype="multipart/form-data">             
+                   <div class="row" id="uploadpics1" style="padding:15px;">                       
+                      <label class="col-md-4"><b>Upload Logo</b> </label>
+                         <div class="col-md-8">
+                            <input type="file" name="file"  class="btn btn-primary" id="file">
+                         </div>
+                    </div> 
+                 <button class=" col-md-offset-8 btn btn-primary" style="margin:10px;" type="submit" 
+                           value="Upload" id="upbtn">Upload</button>
                </form>
              </div>
             </div>

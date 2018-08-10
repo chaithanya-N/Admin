@@ -79,40 +79,47 @@ if (!isset($_SESSION['email'])) {
             <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                    <h1 class="page-header">Location Management</h1>
+                    <h1 class="page-header">Edit User</h1>
                 </div>
               <div class="col-lg-12">
                    <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a href="dashboard.php">Dashboard</a>
                       </li>
-                    <!--   <li class="breadcrumb-item">
+                      <li class="breadcrumb-item">
                          <a href="createuser.php">Usermanagement</a>
-                      </li> -->
-                     <li class="breadcrumb-item active">Location Management</li>
+                      </li>
+                       <li class="breadcrumb-item active">edit User</li>
                     </ol>
               </div>
-           <div class="container-fluid">
-      
-    <div class="tab-content"> 
-       <!-- <div class="col-md-8 " style="color:#000;"> 
-          <form class="form-horizontal" action="" id="createuserform">
+          <?php 
+            $id = $_GET['id'];
+            // echo $id;
+            $euser = mysqli_query($link,"SELECT * FROM users WHERE id = '".$id."'");
+            $row = mysqli_fetch_assoc($euser);
+          ?>
+    
+    
+      <div class="col-md-8" style="color:#000;"> 
+          <form class="form-horizontal" action="" id="edituserform">
                 <div class="form-group">
                   <label class="control-label col-sm-3" for="name">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['name']; ?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3" for="email">Email</label>
                   <div class="col-sm-9">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $row
+                    ['email']; ?>">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3" for="name">Password</label>
                   <div class="col-sm-9">
-                    <input type="password" class="form-control" id="psw" name="psw" placeholder="Enter password">
+                    <input type="password" class="form-control" id="psw" name="psw" value="<?php echo $row
+                    ['password']; ?>">
                   </div>
                 </div>
                 <div class="form-group">
@@ -135,20 +142,16 @@ if (!isset($_SESSION['email'])) {
                     </select>
                   </div>
                 </div>
-                
-                <div class="form-group"> 
-                  <div class="col-sm-offset-4 col-sm-10">
-                    <button type="button" class="btn btn-primary" id="createuserformbtn">Submit</button>
-                  </div>
-                </div>
+                 <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-warning" id="updateuser">Update</button>
+             <a href="existinguser.php" type="button" class="btn btn-info"id="canceledituser">Cancel</a> 
+                <!-- <button type="button" class="btn btn-info" id="deleteuser"><a classs="clbtn" href="existinguser">Cancel</a></button> -->
+                <button type="button" class="btn btn-danger" id="deleteuser">Delete</button>
+              </div>
+            </div>
               </form>
-            </div> -->
-        
-        
-      
-               </div>
-             </div>
-          </div>
+            </div>
      </div>
         <!-- /#page-wrapper -->
  </div>
@@ -174,6 +177,110 @@ if (!isset($_SESSION['email'])) {
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
+       $(document).ready(function() {
+// get user type from db
+  $('#usertype option').each(function(){
+
+      var ut = '<?php echo $row['user_type']; ?>';
+      if($(this).val() == ut)
+      {
+        $(this).addClass("active");
+        $(this).attr("selected","selected");
+      }
+    });
+  // get status from db
+  $('#status option').each(function(){
+
+      var ut = '<?php echo $row['status']; ?>';
+      if($(this).val() == ut)
+      {
+        $(this).addClass("active");
+        $(this).attr("selected","selected");
+      }
+    });
+// insert user data to db
+    $('#createuserformbtn').click(function(){
+      var data = $('#createuserform').serialize();
+         // console.log(data);
+         // alert();
+         $.ajax({
+              url: 'process-createuser.php',     
+                type: 'POST', // performing a POST request
+                data : data,
+                                
+               success: function(result)         
+                {
+                   // alert(result);
+                  if(result = "SUCCESS")
+                     {
+                         alert(result);
+                          window.location.href = "createuser.php";
+                   //   $('#usercreate').modal('show'); 
+                   //  $('#usercreate').on('hidden.bs.modal', function () {
+                   // window.location.href = "createuser.php";
+                   //   })
+                      }
+                }
+         });
+    })
+// insert user data to db end
+
+// update userdata
+    $('#updateuser').click(function(){
+  var data = $('#edituserform').serialize();
+
+   // alert();
+  $.ajax({
+    url:'process-edituser.php',
+    type:'POST',
+    data:data,
+    success:function(result)
+    {
+       // alert(result);
+        window.location.href = "existinguser.php";
+      // if(result='Success')
+      // {
+      //   $('#editsuccess').modal('show'); 
+      //           $('#editsuccess').on('hidden.bs.modal', function () {
+      //           window.location.href = "existinguser.php";
+      //           })
+      // }
+    }
+
+  })
+})
+ // update userdata end
+ // delete user
+ $('#deleteuser').click(function(){
+
+  var data = $('#edituserform').serialize();
+
+  $.ajax({
+    url:'process-deleteuser.php',
+    type:'POST',
+    data:data,
+
+    success:function(result)
+    {
+       // alert(result);
+       window.location.href = "existinguser.php";
+      // if(result == 'Success')
+      // {
+      //   $('#deletesuccess').modal('show'); 
+      //               $('#deletesuccess').on('hidden.bs.modal', function () {
+      //               window.location.href = "existinguser.php";
+      //               })
+      // }
+    }
+
+  })
+})
+ // delete user end
+});
+
+
+
+
     
     </script>
 
